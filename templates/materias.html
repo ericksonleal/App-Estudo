@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Matérias</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1>Matérias</h1>
+
+    <form action="/adicionar_materia" method="POST">
+        <input type="text" name="nome" placeholder="Nome da Matéria" required><br>
+        <input type="text" name="topicos" placeholder="Tópicos separados por vírgula (opcional)"><br>
+        <button type="submit">Adicionar Matéria</button>
+    </form>
+
+    <h2>Lista de Matérias</h2>
+
+    {{MATERIAS_DINAMICAS}}
+    <br>
+    <a href="/">Voltar</a>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checklist de Estudo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1 style="display: flex; justify-content: center;">AppEstudo </h1>
+    <h2>Meta Atual: {{META}} horas &#128338</h2>
+
+    <!------------------------------------- Formulário para atualizar a meta ------------------------------->
+    <form action="/definir_meta" method="POST">
+        <input type="number" name="meta" step="0.1" placeholder="Nova meta em horas" required>
+        <button type="submit">Atualizar Meta &#128204</button>
+    </form>
+
+    <!----------------------------------- Exibe o progresso ---------------------------------------------->
+    <p>Horas Estudadas: {{PROGRESSO}} horas </p><br>
+
+    <div style="display: flex; justify-content: center;">
+    <p>&#128202 Porcentagem de Progresso: {{PORCENTAGEM}}%</p>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+    <div class="barra-progresso">
+        <div class="progresso" style="width: {{PORCENTAGEM}}%"></div>
+    </div>
+    </div>
+
+    <br>
+    <div class="botoes-container" style="display: flex; justify-content: center;">
+    <button class="botao-acao" onclick="window.location.href='/materias'">
+        Gerenciar Matérias e Tópicos &#128218
+    </button>
+    
+    <button class="botao-acao" onclick="window.location.href='/registro'">
+        Registrar Estudo
+    </button>
+    </div>
+
+    <h2>Lista de Matérias &#128218</h2>
+    {{MATERIAS_DINAMICAS}}
+
+
+</body>
+
+</html>

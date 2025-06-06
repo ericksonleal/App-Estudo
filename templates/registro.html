@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Estudo</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Registrar Estudo</h1>
+
+  <form action="/registrar_estudo" method="POST">
+    <label>Matéria:</label>
+    <select name="materia" required>
+      {{OPCOES_MATERIAS}}
+    </select><br><br>
+
+    <label>Tópico:</label>
+    <select name="topico" required>
+      {{OPCOES_TOPICOS}}
+    </select><br><br>
+
+    <label>Tempo Estudado (em horas):</label>
+    <input type="number" name="tempo" step="0.1" required><br><br>
+
+    <label>Anotações:</label><br>
+    <textarea name="anotacoes" rows="4" cols="40"></textarea><br><br>
+
+    <button type="submit">Salvar Estudo</button>
+  </form>
+
+  <br><a href="/">Voltar</a>
+</body>
+</html>
