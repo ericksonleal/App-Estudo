@@ -3,7 +3,9 @@ import socketserver
 import json
 import os
 from urllib.parse import parse_qs
-from utils import (carregar_dados, salvar_dados, html_materias, opcoes_materias, opcoes_topicos)
+from utils import (carregar_dados, salvar_dados,
+                   html_materias, opcoes_materias, opcoes_topicos)
+from utils import grafico_materias, graficos_topicos
 
 PORTA = 8080
 DIRETORIO = "templates"
@@ -31,12 +33,17 @@ class ServidorHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             porcentagem = min(100, (progresso / meta * 100) if meta > 0 else 0)
 
-            # --------------- Substitui todos os placeholders no HTML
+        # --------  Prepara os dados dos gráficos 
+            grafico_materias_json = json.dumps(grafico_materias(info)).replace("</", "<\\/")
+            graficos_topicos_json = json.dumps(graficos_topicos(info)).replace("</", "<\\/")
+
             html_final = (html_base
-                          .replace("{{META}}", f"{meta:.1f}")
-                          .replace("{{PROGRESSO}}", f"{progresso:.1f}")
-                          .replace("{{PORCENTAGEM}}", f"{porcentagem:.1f}")
-                          .replace("{{MATERIAS_DINAMICAS}}", html_materias()))
+                        .replace("{{META}}", f"{meta:.1f}")
+                        .replace("{{PROGRESSO}}", f"{progresso:.1f}")
+                        .replace("{{PORCENTAGEM}}", f"{porcentagem:.1f}")
+                        .replace("{{MATERIAS_DINAMICAS}}", html_materias())
+                        .replace("{{GRAFICO_MATERIAS_JSON}}", grafico_materias_json)
+                        .replace("{{GRAFICOS_TOPICOS_JSON}}", graficos_topicos_json))
 
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=utf-8")
@@ -74,6 +81,7 @@ class ServidorHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 # ------------------------------------------ do_POST ( Método POST ) --------------------------------------------
 # Essa função responde a requisições POST, ou seja quando um formulário é enviado para o servidor
+
 
     def do_POST(self):
         comprimento = int(self.headers['Content-Length'])
