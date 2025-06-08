@@ -101,3 +101,40 @@ def graficos_topicos(dados):
             resultado[nome] = {"labels": labels, "valores": valores}
 
     return resultado
+
+def excluir_materia(nome_materia):
+    dados = carregar_dados()
+    dados["materias"] = [m for m in dados["materias"]
+                         if m["nome"] != nome_materia]
+    salvar_dados(dados)
+
+
+def editar_materia(nome_antigo, nome_novo):
+    dados = carregar_dados()
+    for materia in dados["materias"]:
+        if materia["nome"] == nome_antigo:
+            materia["nome"] = nome_novo
+            break
+    salvar_dados(dados)
+
+
+def excluir_topico(nome_materia, nome_topico):
+    dados = carregar_dados()
+    for materia in dados["materias"]:
+        if materia["nome"] == nome_materia:
+            materia["topicos"] = [t for t in materia["topicos"]
+                                  if t["nome"] != nome_topico]
+            break
+    salvar_dados(dados)
+
+
+def editar_topico(nome_materia, nome_antigo, nome_novo):
+    dados = carregar_dados()
+    for materia in dados["materias"]:
+        if materia["nome"] == nome_materia:
+            for topico in materia["topicos"]:
+                if topico["nome"] == nome_antigo:
+                    topico["nome"] = nome_novo
+                    break
+            break
+    salvar_dados(dados)

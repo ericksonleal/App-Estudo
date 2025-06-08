@@ -4,7 +4,7 @@ import json
 import os
 from urllib.parse import parse_qs
 from utils import (carregar_dados, salvar_dados,
-                   html_materias, opcoes_materias, opcoes_topicos)
+                   html_materias, opcoes_materias, opcoes_topicos, editar_materia, excluir_materia, editar_topico, excluir_topico)
 from utils import grafico_materias, graficos_topicos
 
 PORTA = 8080
@@ -160,6 +160,53 @@ class ServidorHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             self.send_response(303)
             self.send_header('Location', '/')
+            self.end_headers()
+            return
+        
+        # ---------------------------------- Novas rotas ---------------------------
+        elif self.path == "/editar_materia":
+            nome_antigo = dados.get("nome_antigo", [""])[0]
+            nome_novo = dados.get("nome_novo", [""])[0]
+            editar_materia(nome_antigo, nome_novo)
+
+            self.send_response(303)
+            self.send_header("Location", "/materias")
+            self.end_headers()
+            return
+
+        elif self.path == "/excluir_materia":
+            nome = dados.get("nome", [""])[0]
+            excluir_materia(nome)
+
+            self.send_response(303)
+            self.send_header("Location", "/materias")
+            self.end_headers()
+            return
+
+        elif self.path == "/editar_topico":
+            nome_materia = dados.get("materia", [""])[0]
+            nome_antigo = dados.get("nome_antigo", [""])[0]
+            nome_novo = dados.get("nome_novo", [""])[0]
+            editar_topico(nome_materia, nome_antigo, nome_novo)
+
+            self.send_response(303)
+            self.send_header("Location", "/materias")
+            self.end_headers()
+            return
+
+        elif self.path == "/excluir_topico":
+            nome_materia = dados.get("materia", [""])[0]
+            nome_topico = dados.get("nome_topico", [""])[0]
+
+            info = carregar_dados()
+            for materia in info["materias"]:
+                if materia["nome"] == nome_materia:
+                    materia["topicos"] = [t for t in materia["topicos"] if t["nome"] != nome_topico]
+                    break
+            salvar_dados(info)
+
+            self.send_response(303)
+            self.send_header('Location', '/materias')
             self.end_headers()
             return
 
